@@ -14,14 +14,6 @@ describe('finding spaces and possible moves', () => {
     ]);
     expect(game.getSpaces(board, 'o')).toEqual([3, 4, 8]);
   });
-
-  it('should create all possible next boards for a player ', () => {
-    expect(game.getNextBoards(board, 'o')).toEqual([
-      ['x', 'x', 'o', 'o', 'o', 'x', ' ', ' ', 'o'],
-      ['x', 'x', ' ', 'o', 'o', 'x', 'o', ' ', 'o'],
-      ['x', 'x', ' ', 'o', 'o', 'x', ' ', 'o', 'o']
-    ]);
-  });
 });
 
 it('correctly assesses when a game is over', () => {
