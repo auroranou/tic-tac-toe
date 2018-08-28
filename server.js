@@ -2,7 +2,8 @@
 
 const express = require('express');
 const app = express();
-const game = require('./tic-tac-toe');
+const game = require('./lib/tic-tac-toe');
+const validation = require('./lib/validation');
 
 app.get('/', (req, res) => {
   const { board } = req.query;
@@ -10,16 +11,17 @@ app.get('/', (req, res) => {
     throw new Error('No board provided');
   }
 
-  const parsedBoard = game.isValidBoard(board);
+  const parsedBoard = validation.isValidBoard(board);
   if (!parsedBoard) {
     throw new Error('Board is invalid');
   }
 
-  if (!game.isPlayersTurn(board)) {
+  if (!validation.isPlayersTurn(parsedBoard)) {
     throw new Error('It\'s not your turn');
   }
 
-  res.send(JSON.stringify(parsedBoard));
+  const nextMove = game.findNextMove(parsedBoard, 'o');
+  res.send(nextMove);
 });
 
 const PORT = 3000;

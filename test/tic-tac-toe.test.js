@@ -1,44 +1,42 @@
 'use strict';
 
-const game = require('../tic-tac-toe');
+const game = require('../lib/tic-tac-toe');
 
-// Board validation
-it('checks that the board contains only 9 characters', () => {
-  const tooShort = 'xx o ';
-  expect(game.isValidBoard(tooShort)).toBe(false);
+describe('finding spaces and possible moves', () => {
+  const board = ['x', 'x', 'empty', 'o', 'o', 'x', 'empty', 'empty', 'o'];
+
+  it('should find all of the empty spaces in a board object', () => {
+    expect(game.getSpaces(board, 'empty')).toEqual([2, 6, 7]);
+  });
+
+  it('should find all spaces belonging to a given player', () => {
+    expect(game.getSpaces(board, 'x')).toEqual([0, 1, 5
+    ]);
+    expect(game.getSpaces(board, 'o')).toEqual([3, 4, 8]);
+  });
+
+  it('should create all possible next boards for a player ', () => {
+    expect(game.getNextBoards(board, 'o')).toEqual([
+      ['x', 'x', 'o', 'o', 'o', 'x', 'empty', 'empty', 'o'],
+      ['x', 'x', 'empty', 'o', 'o', 'x', 'o', 'empty', 'o'],
+      ['x', 'x', 'empty', 'o', 'o', 'x', 'empty', 'o', 'o']
+    ]);
+  });
 });
 
-it('checks that only valid characters are allowed', () => {
-  const invalidChars = 'abcde123&';
-  expect(game.isValidBoard(invalidChars)).toBe(false);
+it('correctly assesses when a game is over', () => {
+  // x wins
+  const board1 = ['x', 'o', 'o', 'empty', 'x', 'o', 'empty', 'empty', 'x'];
+  expect(game.evaluateBoard(board1, 'x')).toEqual({
+    gameOver: true,
+    winner: 'x'
+  });
+
+  // Tie (no empty spaces)
+  const board2 = ['o', 'x', 'o', 'o', 'x', 'x', 'x', 'o', 'x'];
+  expect(game.evaluateBoard(board2, 'x')).toEqual({
+    gameOver: true,
+    winner: null
+  });
 });
 
-it('returns an object when board is valid', () => {
-  const validChars = 'xx oox  o';
-  const expected = {
-    0: 'x',
-    1: 'x',
-    2: 'empty',
-    3: 'o',
-    4: 'o',
-    5: 'x',
-    6: 'empty',
-    7: 'empty',
-    8: 'o'
-  };
-  expect(game.isValidBoard(validChars)).toEqual(expected);
-});
-
-it("correctly gauges if o can play", () => {
-  // Player x goes first
-  const board1 = '    x    ';
-  expect(game.isPlayersTurn(board1)).toBe(true);
-
-  // Player o goes first
-  const board2 = '   ox    ';
-  expect(game.isPlayersTurn(board2)).toBe(true);
-
-  // Invalid player state
-  const board3 = '   oxo   ';
-  expect(game.isPlayersTurn(board3)).toBe(false);
-});
