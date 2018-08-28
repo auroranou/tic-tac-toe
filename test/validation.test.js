@@ -15,20 +15,20 @@ it('checks that only valid characters are allowed', () => {
 
 it('returns an array when board is valid', () => {
   const validChars = 'xx oox  o';
-  const expected = ['x', 'x', 'empty', 'o', 'o', 'x', 'empty', 'empty', 'o'];
+  const expected = ['x', 'x', ' ', 'o', 'o', 'x', ' ', ' ', 'o'];
   expect(validation.isValidBoard(validChars)).toEqual(expected);
 });
 
 it("correctly gauges if o can play", () => {
   // Player x goes first
-  const board1 = ['empty', 'empty', 'empty', 'empty', 'x', 'empty', 'empty', 'empty', 'empty'];
+  const board1 = [' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' '];
   expect(validation.isPlayersTurn(board1)).toBe(true);
 
   // Player o goes first
-  const board2 = ['empty', 'empty', 'empty', 'o', 'x', 'empty', 'empty', 'empty', 'empty'];
+  const board2 = [' ', ' ', ' ', 'o', 'x', ' ', ' ', ' ', ' '];
   expect(validation.isPlayersTurn(board2)).toBe(true);
 
   // Invalid player state
-  const board3 = ['empty', 'empty', 'empty', 'o', 'x', 'o', 'empty', 'empty', 'empty'];
+  const board3 = [' ', ' ', ' ', 'o', 'x', 'o', ' ', ' ', ' '];
   expect(validation.isPlayersTurn(board3)).toBe(false);
 });

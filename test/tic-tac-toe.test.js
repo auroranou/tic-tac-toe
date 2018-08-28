@@ -3,10 +3,10 @@
 const game = require('../lib/tic-tac-toe');
 
 describe('finding spaces and possible moves', () => {
-  const board = ['x', 'x', 'empty', 'o', 'o', 'x', 'empty', 'empty', 'o'];
+  const board = ['x', 'x', ' ', 'o', 'o', 'x', ' ', ' ', 'o'];
 
   it('should find all of the empty spaces in a board object', () => {
-    expect(game.getSpaces(board, 'empty')).toEqual([2, 6, 7]);
+    expect(game.getSpaces(board, ' ')).toEqual([2, 6, 7]);
   });
 
   it('should find all spaces belonging to a given player', () => {
@@ -17,26 +17,32 @@ describe('finding spaces and possible moves', () => {
 
   it('should create all possible next boards for a player ', () => {
     expect(game.getNextBoards(board, 'o')).toEqual([
-      ['x', 'x', 'o', 'o', 'o', 'x', 'empty', 'empty', 'o'],
-      ['x', 'x', 'empty', 'o', 'o', 'x', 'o', 'empty', 'o'],
-      ['x', 'x', 'empty', 'o', 'o', 'x', 'empty', 'o', 'o']
+      ['x', 'x', 'o', 'o', 'o', 'x', ' ', ' ', 'o'],
+      ['x', 'x', ' ', 'o', 'o', 'x', 'o', ' ', 'o'],
+      ['x', 'x', ' ', 'o', 'o', 'x', ' ', 'o', 'o']
     ]);
   });
 });
 
 it('correctly assesses when a game is over', () => {
   // x wins
-  const board1 = ['x', 'o', 'o', 'empty', 'x', 'o', 'empty', 'empty', 'x'];
-  expect(game.evaluateBoard(board1, 'x')).toEqual({
+  const board1 = ['x', 'o', 'o', ' ', 'x', 'o', ' ', ' ', 'x'];
+  expect(game.evaluateBoard(board1)).toEqual({
     gameOver: true,
     winner: 'x'
   });
 
   // Tie (no empty spaces)
   const board2 = ['o', 'x', 'o', 'o', 'x', 'x', 'x', 'o', 'x'];
-  expect(game.evaluateBoard(board2, 'x')).toEqual({
+  expect(game.evaluateBoard(board2)).toEqual({
     gameOver: true,
     winner: null
   });
 });
 
+it('chooses the optimal next move', () => {
+  const board = [' ', 'x', 'x', 'o', ' ', ' ', 'o', ' ', ' '];
+  expect(game.findNextMove(board, 'o')).toEqual([
+    'o', 'x', 'x', 'o', ' ', ' ', 'o', ' ', ' '
+  ]);
+});

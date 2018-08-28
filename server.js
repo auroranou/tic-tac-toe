@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   }
 
   const nextMove = game.findNextMove(parsedBoard, 'o');
-  res.send(nextMove);
+  res.send(nextMove.join(''));
 });
 
 const PORT = process.env.PORT || 3000;
