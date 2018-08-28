@@ -20,6 +20,12 @@ app.get('/', (req, res) => {
     throw new Error('It\'s not your turn');
   }
 
+  // Check if a board containing a winning move was passed in
+  const initialBoardState = game.evaluateBoard(parsedBoard, 'o');
+  if (initialBoardState.gameOver && initialBoardState.winner) {
+    throw new Error(`${initialBoardState.winner} has already won`);
+  }
+
   const nextMove = game.findNextMove(parsedBoard, 'o');
   res.send(nextMove);
 });
