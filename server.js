@@ -8,22 +8,22 @@ const validation = require('./lib/validation');
 app.get('/', (req, res) => {
   const { board } = req.query;
   if (board === null || board === undefined) {
-    throw new Error('No board provided');
+    res.status(400).send('No board provided');
   }
 
   const parsedBoard = validation.isValidBoard(board);
   if (!parsedBoard) {
-    throw new Error('Board is invalid');
+    res.status(400).send('Board is invalid');
   }
 
   if (!validation.isPlayersTurn(parsedBoard)) {
-    throw new Error('It\'s not your turn');
+    res.status(400).send('It\'s not your turn');
   }
 
   // Check if a board containing a winning move was passed in
   const initialBoardState = game.evaluateBoard(parsedBoard, 'o');
   if (initialBoardState.gameOver && initialBoardState.winner) {
-    throw new Error(`${initialBoardState.winner} has already won`);
+    res.status(400).send(`${initialBoardState.winner} has already won`);
   }
 
   const nextMove = game.findNextMove(parsedBoard, 'o');
