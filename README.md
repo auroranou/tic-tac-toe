@@ -1,8 +1,15 @@
 # Tic-tac-toe API
 
-This app is hosted at https://young-coast-77703.herokuapp.com/.
+This is an API for finding the next move given a tic-tac-toe board. The app is hosted at https://young-coast-77703.herokuapp.com/.
+
+Send a GET request with the `board` query string in order to receive the next move (the server always plays as o). E.g.: 
+```curl https://young-coast-77703.herokuapp.com/?board=+xxo++o++
+```
+will return `oxxo  o  `.
 
 ## Local development
+
+This app uses Express to serve the endpoint and Jest for testing.
 
 ```javascript
 yarn install
